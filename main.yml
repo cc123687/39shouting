@@ -1,0 +1,27 @@
+name: CI
+
+on: [push] # push时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 执行环境为ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1 # 现成actions，获取源码
+    - uses: actions/setup-node@v1 # 安装nodejs，版本指定10
+      with:
+        node-version: '10.x'
+    - name: npm install # 安装函数的依赖
+      run: cd hello_world && npm install
+    - name: pip --version
+      run: pip --version
+    - name: install SCF CLI # 安装SCF CLI
+      run: sudo pip install scf
+    - name: scf configure # scf cofigure, 配置appid, 地域和api秘钥等信息
+      env: 
+        APPID: 1252618971
+        REGION: ap-beijing
+        SECRET_ID: ${{ secrets.AKIDMSJvlLxgRxCBuIFMnz3RyHsKL8i28wXr }} # 值存放在第二步所说的secrets中
+        SECRET_KEY: ${{ secrets.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 }} # 同上
+      run: scf configure set --appid $APPID --region $REGION --secret-id $SECRET_ID --secret-key $SECRET_KEY
+    - name: scf deploy # scf deploy
+      run: scf deploy -t ./hello_world/template.yaml -f
