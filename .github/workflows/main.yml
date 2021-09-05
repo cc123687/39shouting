@@ -20,8 +20,8 @@ jobs:
       env: 
         APPID: 1252618971
         REGION: ap-beijing
-        SECRET_ID: ${{ AKIDMSJvlLxgRxCBuIFMnz3RyHsKL8i28wXr }} # 值存放在第二步所说的secrets中
-        SECRET_KEY: ${{ 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}} # 同上
+        SECRET_ID: ${{ secrets.AKIDMSJvlLxgRxCBuIFMnz3RyHsKL8i28wXr }} # 值存放在第二步所说的secrets中
+        SECRET_KEY: ${{ secrets.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}} # 同上
       run: scf configure set --appid $APPID --region $REGION --secret-id $SECRET_ID --secret-key $SECRET_KEY
     - name: scf deploy # scf deploy
       run: scf deploy -t ./hello_world/template.yaml -f
